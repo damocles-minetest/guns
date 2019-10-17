@@ -9,3 +9,4 @@ CC-BY-SA 3.0
 * textures/guns_beretta.png
 * sounds/guns_empty.ogg
 * sounds/guns_hit.ogg
+* sounds/guns_reload.ogg
