@@ -30,9 +30,6 @@ minetest.register_tool("guns:beretta", {
     ray:next() -- player
     pointed_thing = ray:next()
 
-    -- XXX
-    minetest.chat_send_player(player:get_player_name(), dump(pointed_thing))
-
     if not pointed_thing then
       return itemstack
     end
