@@ -1,18 +1,37 @@
 
+minetest.register_craftitem("guns:beretta_ammunition", {
+	description = "Beretta 9mm ammunition",
+	inventory_image = "guns_beretta_ammunition.png",
+	stack_max = 25
+})
+
 minetest.register_tool("guns:beretta", {
 	description = "Beretta",
-	wield_scale = {x=1.1,y=1.1,z=1.05},
 	range = 0,
 	inventory_image = "guns_beretta.png",
-	on_secondary_use = function(itemstack, player, pointed_thing)
-		itemstack:set_wear(0)
+	on_secondary_use = function(itemstack, player)
+		if itemstack:get_wear() < 65535 then
+			-- still loaded
+			return
+		end
 
-		minetest.sound_play("guns_reload", {pos=player:get_pos()})
+		local player_inv = player:get_inventory()
+		local ammo_stack = ItemStack("guns:beretta_ammunition 25")
+
+		if player_inv:contains_item("main", ammo_stack) then
+			-- reload
+			player_inv:remove_item("main", ammo_stack)
+			itemstack:set_wear(0)
+			minetest.sound_play("guns_reload", {pos=player:get_pos()})
+		else
+			-- no ammo
+			minetest.sound_play("guns_empty", {pos=player:get_pos()})
+		end
 
 		return itemstack
 	end,
 
-	on_use = function(itemstack, player, pointed_thing)
+	on_use = function(itemstack, player)
 
 		local wear = 65535 / 25
 		if itemstack:get_wear() >= (65535 - wear) then
@@ -28,7 +47,7 @@ minetest.register_tool("guns:beretta", {
     local rayend = vector.add(raybegin, vector.multiply(player:get_look_dir(), 50))
     local ray = minetest.raycast(raybegin, rayend, true, false)
     ray:next() -- player
-    pointed_thing = ray:next()
+    local pointed_thing = ray:next()
 
     if not pointed_thing then
       return itemstack
