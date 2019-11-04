@@ -1,34 +1,6 @@
 
 guns.register_gun = function(def)
 
--- playername -> time
-local last_shoot_time = {}
-
-minetest.register_on_leaveplayer(function(player)
-	last_shoot_time[player:get_player_name()] = nil
-end)
-
-local function can_shoot(player)
-	local name = player:get_player_name()
-	local now = os.clock()
-	local last_shot = last_shoot_time[name]
-
-	if not last_shot then
-		last_shoot_time[name] = now
-		return true
-
-	end
-
-	if (now - last_shot) < def.interval then
-		return false
-
-	else
-		last_shoot_time[name] = now
-		return true
-
-	end
-end
-
 local ammo_def = minetest.registered_items[def.ammo]
 
 local description = def.description .. " " ..
@@ -66,7 +38,7 @@ minetest.register_tool(def.name, {
 
 	on_use = function(itemstack, player)
 
-		if not can_shoot(player) then
+		if not guns.can_shoot(player, def.interval) then
 			return itemstack
 		end
 
