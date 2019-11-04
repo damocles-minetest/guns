@@ -1,4 +1,32 @@
 
+-- playername -> time
+local last_shoot_time = {}
+
+minetest.register_on_leaveplayer(function(player)
+	last_shoot_time[player:get_player_name()] = nil
+end)
+
+local function can_shoot(player)
+	local name = player:get_player_name()
+	local now = minetest.get_us_time()
+	local last_shot = last_shoot_time[name]
+
+	if not last_shot then
+		last_shoot_time[name] = now
+		return true
+
+	end
+
+	if (now - last_shot) < 250000 then
+		return false
+
+	else
+		last_shoot_time[name] = now
+		return true
+
+	end
+end
+
 minetest.register_craftitem("guns:beretta_ammunition", {
 	description = "Beretta 9mm ammunition",
 	inventory_image = "guns_beretta_ammunition.png",
@@ -32,6 +60,10 @@ minetest.register_tool("guns:beretta", {
 	end,
 
 	on_use = function(itemstack, player)
+
+		if not can_shoot(player) then
+			return itemstack
+		end
 
 		local wear = 65535 / 25
 		if itemstack:get_wear() >= (65535 - wear) then
