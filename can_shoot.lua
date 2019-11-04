@@ -7,7 +7,7 @@ end)
 
 guns.can_shoot = function(player, interval)
 	local name = player:get_player_name()
-	local now = os.clock()
+	local now = os.time()
 	local last_shot = last_shoot_time[name]
 
 	if not last_shot then

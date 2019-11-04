@@ -15,7 +15,7 @@ minetest.register_tool(def.name, {
 	range = 0,
 	inventory_image = def.texture,
 	on_secondary_use = function(itemstack, player)
-		if itemstack:get_wear() < 65535 then
+		if itemstack:get_wear() < 65000 then
 			-- still loaded
 			return
 		end
@@ -66,11 +66,12 @@ minetest.register_tool(def.name, {
 
     if pointed_thing.type == "object" then
       local object = pointed_thing.ref
-      if object.get_luaentity and object:get_luaentity().name == "__builtin:item" then
+      if object and object.get_luaentity and object:get_luaentity() and
+				object:get_luaentity().name == "__builtin:item" then
         object:remove()
         guns.smoke(object:get_pos(), dir)
       else
-	      object:punch(player, 0.2, {
+	      object:punch(player, 1.0, {
 	        full_punch_interval = 1.0,
 	        damage_groups= {fleshy = def.damage},
 	      })
