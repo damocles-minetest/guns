@@ -13,6 +13,8 @@ CC-BY-SA 3.0
 * textures/guns_scout.png
 * textures/guns_ammo_shell.png
 * textures/guns_spas12.png
+* textures/guns_electrogun.png
+* textures/guns_laser.png
 * sounds/guns_beretta.ogg
 * sounds/guns_empty.ogg
 * sounds/guns_hit.ogg
