@@ -1,16 +1,4 @@
 
---[[
-guns.register_gun({
-  interval = 0.25,
-  name = "guns:beretta",
-  description = "Beretta",
-  texture = "guns_beretta.png",
-  ammo = "guns:beretta_ammunition",
-  sound = "guns_beretta",
-  ammo_count = 25
-})
-
---]]
 guns.register_gun = function(def)
 
 -- playername -> time
@@ -41,8 +29,17 @@ local function can_shoot(player)
 	end
 end
 
+local ammo_def = minetest.registered_items[def.ammo]
+
+local description = def.description .. " " ..
+	minetest.colorize("#ff0000", "Damage: ") .. def.damage .. " " ..
+	minetest.colorize("#00ff00", "Range: ") .. def.range .. " " ..
+	minetest.colorize("#ff00ff", "Reload time: ") .. def.interval .. "s " ..
+	minetest.colorize("#0000ff", "Ammo capacity: ") .. def.ammo_count ..
+	" x " .. ammo_def.description
+
 minetest.register_tool(def.name, {
-	description = def.description or "",
+	description = description,
 	range = 0,
 	inventory_image = def.texture,
 	on_secondary_use = function(itemstack, player)
@@ -84,7 +81,7 @@ minetest.register_tool(def.name, {
 
 
     local raybegin = vector.add(player:get_pos(),{x=0, y=player:get_properties().eye_height, z=0})
-    local rayend = vector.add(raybegin, vector.multiply(player:get_look_dir(), 50))
+    local rayend = vector.add(raybegin, vector.multiply(player:get_look_dir(), def.range))
     local ray = minetest.raycast(raybegin, rayend, true, false)
     ray:next() -- player
     local pointed_thing = ray:next()
