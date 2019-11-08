@@ -9,5 +9,6 @@ guns.register_gun({
   ammo_count = 25,
   sound = "guns_beretta",
   damage = 2,
-  range = 50
+  range = 50,
+  on_hit = guns.smoke
 })

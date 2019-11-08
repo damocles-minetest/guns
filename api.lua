@@ -69,7 +69,9 @@ minetest.register_tool(def.name, {
       if object and object.get_luaentity and object:get_luaentity() and
 				object:get_luaentity().name == "__builtin:item" then
         object:remove()
-        guns.smoke(object:get_pos(), dir)
+				if def.on_hit then
+					def.on_hit(object:get_pos(), dir)
+				end
       else
 	      object:punch(player, 1.0, {
 	        full_punch_interval = 1.0,
@@ -78,7 +80,9 @@ minetest.register_tool(def.name, {
 			end
 
     elseif pointed_thing.type == "node" then
-      guns.smoke(pointed_thing.above, dir)
+			if def.on_hit then
+				def.on_hit(pointed_thing.above, dir)
+			end
 
     end
 
