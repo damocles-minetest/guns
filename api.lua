@@ -15,7 +15,10 @@ minetest.register_tool(def.name, {
 	range = 0,
 	inventory_image = def.texture,
 	on_secondary_use = function(itemstack, player)
-		if itemstack:get_wear() < 65000 then
+		local wear = 65535 / def.ammo_count
+		local is_empty = itemstack:get_wear() >= (65535 - wear)
+
+		if not is_empty then
 			-- still loaded
 			return
 		end
@@ -43,7 +46,9 @@ minetest.register_tool(def.name, {
 		end
 
 		local wear = 65535 / def.ammo_count
-		if itemstack:get_wear() >= (65535 - wear) then
+		local is_empty = itemstack:get_wear() >= (65535 - wear)
+
+		if is_empty then
 			minetest.sound_play("guns_empty", {pos=player:get_pos()})
 			return
 		else
