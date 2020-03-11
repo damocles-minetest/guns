@@ -12,7 +12,6 @@ local description = def.description .. " " ..
 
 minetest.register_tool(def.name, {
 	description = description,
-	range = 0,
 	inventory_image = def.texture,
 	on_secondary_use = function(itemstack, player)
 		local wear = 65535 / def.ammo_count
