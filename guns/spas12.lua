@@ -2,9 +2,9 @@
 
 guns.register_gun({
   interval = 1.5,
-  name = "guns:scout",
-  description = "Scout",
-  texture = "guns_scout.png",
+  name = "guns:spas12",
+  description = "spas 12",
+  texture = "guns_spas12.png",
   ammo = "guns:shell",
   ammo_count = 5,
   sound = "guns_shotgun",
